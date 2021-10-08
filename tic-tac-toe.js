@@ -5,11 +5,9 @@ window.onload = function(){
 
     for(i=0; i<boxes.length; i++){
         boxes[i].classList.add('square');
-    }
-
-    for(i=0; i<boxes.length; i++){
         boxes[i].addEventListener('click', handleClick, { once: true});
-        
+        boxes[i].addEventListener('mouseover', hoverFunction);
+        boxes[i].addEventListener('mouseout', leaveFunction);
     }
 
     function handleClick(e){
@@ -22,6 +20,14 @@ window.onload = function(){
             e.target.classList.add('O');
             xTurn = true;
         }     
+    }
+
+    function hoverFunction(e){
+        e.target.classList.add('hover');
+    }
+
+    function leaveFunction(e){
+        e.target.classList.remove('hover');
     }
     
 };
