@@ -1,5 +1,6 @@
 window.onload = function(){
     let boxes = document.getElementById('board').getElementsByTagName('div');
+    let button = document.querySelector('.btn')
     let xTurn = true;
     let xArray = [];
     let yArray = [];
@@ -14,6 +15,7 @@ window.onload = function(){
         ['2', '4', '6']
     ];
 
+
     for(i=0; i<boxes.length; i++){
         boxes[i].id = ''+i;
         boxes[i].classList.add('square');
@@ -21,6 +23,8 @@ window.onload = function(){
         boxes[i].addEventListener('mouseover', hoverFunction);
         boxes[i].addEventListener('mouseout', leaveFunction);
     }
+
+    button.addEventListener('click', clicked);
 
     function handleClick(e){
         if(xTurn == true){
@@ -31,6 +35,9 @@ window.onload = function(){
             if(winner(xArray)){
                 document.getElementById('status').innerHTML = 'Congratulations! X is the Winner!';
                 document.getElementById('status').classList.add('you-won');
+                for(i=0; i<boxes.length; i++){
+                    boxes[i].removeEventListener('click', handleClick, { once: true});
+                }
             }
         }else {
             e.target.innerHTML = 'O';
@@ -40,7 +47,13 @@ window.onload = function(){
             if(winner(yArray)){
                 document.getElementById('status').innerHTML = 'Congratulations! O is the Winner!';
                 document.getElementById('status').classList.add('you-won');
+                for(i=0; i<boxes.length; i++){
+                    boxes[i].removeEventListener('click', handleClick, { once: true});
+                }
             }
+        }
+        if(winner(xArray) != true && winner(yArray) != true && (xArray.length + yArray.length) == 9){
+            document.getElementById('status').innerHTML = 'Oh No! Seems like there was a draw';
         }     
     }
 
@@ -63,6 +76,21 @@ window.onload = function(){
                     }
                 } 
             }
+        }
+    }
+
+    function clicked(e){
+        xTurn = true;
+        xArray = [];
+        yArray = [];
+        document.getElementById('status').innerHTML = 'Move your mouse over a square and click to play an X or an O.';
+        document.getElementById('status').classList.remove('you-won');
+
+        for(i=0; i<boxes.length; i++){
+            boxes[i].innerHTML = '';
+            boxes[i].classList.remove('X');
+            boxes[i].classList.remove('O');
+            boxes[i].addEventListener('click', handleClick, { once: true});
         }
     }
 };
